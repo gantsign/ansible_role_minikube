@@ -1,38 +1,155 @@
-Role Name
-=========
+Ansible Role: Minikube
+======================
 
-A brief description of the role goes here.
+[![Build Status](https://travis-ci.com/gantsign/ansible_role_minikube.svg?branch=master)](https://travis-ci.com/gantsign/ansible_role_minikube)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-gantsign.minikube-blue.svg)](https://galaxy.ansible.com/gantsign/minikube)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/gantsign/ansible_role_minikube/master/LICENSE)
+
+Role to download and install [Minikube](https://github.com/kubernetes/minikube)
+the tool for running Kubernetes locally.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+* Ansible >= 2.4
+
+* Linux Distribution
+
+    * Debian Family
+
+        * Debian
+
+            * Jessie (8)
+            * Stretch (9)
+
+        * Ubuntu
+
+            * Trusty (14.04)
+            * Xenial (16.04)
+            * Bionic (18.04)
+
+    * RedHat Family
+
+        * CentOS
+
+            * 7
+
+        * Fedora
+
+            * 28
+
+    * SUSE Family
+
+        * OpenSUSE
+
+            * 42.2
+
+    * Note: other versions are likely to work but have not been tested.
+
+* VirtualBox / Docker (already installed)
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+The following variables will change the behavior of this role (default values
+are shown below):
 
-Dependencies
-------------
+```yaml
+# Minikube version number
+minikube_version: '0.28.2'
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+# Directory to store files downloaded for Minikubes
+minikube_download_dir: "{{ x_ansible_download_dir | default(ansible_env.HOME + '/.ansible/tmp/downloads') }}"
+```
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```yaml
+- hosts: servers
+  roles:
+    - role: gantsign.minikube
+```
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Tab Completion for Zsh
+----------------------
+
+### Using Ansible
+
+We recommend using the
+[gantsign.antigen](https://galaxy.ansible.com/gantsign/antigen) role to enable
+tab completion for Minikube (this must be configured for each user).
+
+```yaml
+- hosts: servers
+  roles:
+    - role: gantsign.minikube
+
+    - role: gantsign.antigen
+      users:
+        - username: example
+          antigen_libraries:
+            - name: oh-my-zsh
+          antigen_bundles:
+            # Oh My Zsh Minikube plugin
+            - name: minikube
+```
+
+### Using Antigen
+
+If you prefer to use [Antigen](https://github.com/zsh-users/antigen) directly
+add the following to your Antigen configuration:
+
+```bash
+antigen use oh-my-zsh
+antigen bundle minikube
+```
+
+### Manual configuration
+
+To manually configure Zsh add the following to your `.zshrc`:
+
+```bash
+eval "$(minikube completion zsh)"
+```
+
+More Roles From GantSign
+------------------------
+
+You can find more roles from GantSign on
+[Ansible Galaxy](https://galaxy.ansible.com/gantsign).
+
+Development & Testing
+---------------------
+
+This project uses [Molecule](http://molecule.readthedocs.io/) to aid in the
+development and testing; the role is unit tested using
+[Testinfra](http://testinfra.readthedocs.io/) and
+[pytest](http://docs.pytest.org/).
+
+To develop or test you'll need to have installed the following:
+
+* Linux (e.g. [Ubuntu](http://www.ubuntu.com/))
+* [Docker](https://www.docker.com/)
+* [Python](https://www.python.org/) (including python-pip)
+* [Ansible](https://www.ansible.com/)
+* [Molecule](http://molecule.readthedocs.io/)
+
+To test this role run the following command from the project root:
+
+```bash
+molecule test
+```
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+John Freeman
+
+GantSign Ltd.
+Company No. 06109112 (registered in England)

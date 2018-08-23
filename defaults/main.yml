@@ -1,2 +1,6 @@
 ---
-# defaults file for ansible_role_minikube
+# Minikube version number
+minikube_version: '0.28.2'
+
+# Directory to store files downloaded for Minikubes
+minikube_download_dir: "{{ x_ansible_download_dir | default(ansible_env.HOME + '/.ansible/tmp/downloads') }}"
