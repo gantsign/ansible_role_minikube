@@ -56,7 +56,7 @@ are shown below):
 
 ```yaml
 # Minikube version number
-minikube_version: '1.1.0'
+minikube_version: '1.1.1'
 
 # Directory to store files downloaded for Minikube
 minikube_download_dir: "{{ x_ansible_download_dir | default(ansible_env.HOME + '/.ansible/tmp/downloads') }}"
