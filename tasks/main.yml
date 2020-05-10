@@ -1,33 +1,39 @@
 ---
-- name: create download directory
-  file:
+
+- name: minikube | create local temporary directory
+  tempfile:
     state: directory
-    mode: 'u=rwx,go=rx'
-    dest: '{{ minikube_download_dir }}'
+    suffix: binary
+  changed_when: false
+  delegate_to: 127.0.0.1
+  register: minikubeDownloadDirectory
 
 - name: download sha256sum
   get_url:
     url: '{{ minikube_mirror }}/{{ minikube_redis_filename }}.sha256'
-    dest: '{{ minikube_download_dir }}/{{ minikube_download_filename }}.sha256'
+    dest: '{{ minikubeDownloadDirectory.path }}/{{ minikube_download_filename }}.sha256'
     force: no
     use_proxy: yes
     validate_certs: yes
     mode: 'u=rw,go=r'
+  delegate_to: 127.0.0.1
 
 - name: read sha256sum
   slurp:
-    src: '{{ minikube_download_dir }}/{{ minikube_download_filename }}.sha256'
+    src: '{{ minikubeDownloadDirectory.path }}/{{ minikube_download_filename }}.sha256'
   register: minikube_sha256sum
+  delegate_to: 127.0.0.1
 
 - name: download Minikube
   get_url:
     url: '{{ minikube_mirror }}/{{ minikube_redis_filename }}'
-    dest: '{{ minikube_download_dir }}/{{ minikube_download_filename }}'
+    dest: '{{ minikubeDownloadDirectory.path }}/{{ minikube_download_filename }}'
     sha256sum: '{{ minikube_sha256sum.content | b64decode | trim }}'
     force: no
     use_proxy: yes
     validate_certs: yes
     mode: 'u=rw,go=r'
+  delegate_to: 127.0.0.1
 
 - name: create the Minikube installation dir
   become: yes
@@ -41,8 +47,7 @@
 - name: install Minikube
   become: yes
   copy:
-    src: '{{ minikube_download_dir }}/{{ minikube_download_filename }}'
-    remote_src: yes
+    src: '{{ minikubeDownloadDirectory.path }}/{{ minikube_download_filename }}'
     dest: '{{ minikube_install_path }}'
     force: yes
     owner: root
