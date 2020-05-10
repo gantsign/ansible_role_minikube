@@ -16,6 +16,7 @@
     use_proxy: yes
     validate_certs: yes
     mode: 'u=rw,go=r'
+  changed_when: false
   delegate_to: 127.0.0.1
 
 - name: read sha256sum
@@ -33,6 +34,7 @@
     use_proxy: yes
     validate_certs: yes
     mode: 'u=rw,go=r'
+  changed_when: false
   delegate_to: 127.0.0.1
 
 - name: create the Minikube installation dir
