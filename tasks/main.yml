@@ -55,3 +55,83 @@
     owner: root
     group: root
     mode: 'u=rwx,go=rx'
+
+
+- name: ansible-orchestration | check if virtualization is enabled
+  shell: set -o pipefail && egrep -q 'vmx|svm' /proc/cpuinfo && echo true || echo false
+  changed_when: false
+  register: virt_enabled
+
+- name: ansible-orchestration | debug virtualization flag value
+  debug:
+    var: virt_enabled
+    verbosity: 2
+
+- name: ansible-orchestration | installs libvirt and kvm drivers if virtualisation is enabled
+  import_role:
+    name: tcharl.ansible_virtualization
+  when: virt_enabled.stdout == "true" and not
+
+- name: ansible-orchestration | add system user
+  import_role:
+    name: tcharl.ansible_users
+  vars:
+    ansible_become: yes
+    users_group_list:
+      - name: "{{ orchestration.group }}"
+      - name: "{{ orchestrator_virtualization_group }}"
+    users_user_list: # minikube should create a ~/.kube/config file...
+      - name: "{{ orchestration.user }}"
+        group: "{{ orchestration.group }}"
+        groups: "{{ orchestrator_virtualization_group }}"
+        shell: /sbin/nologin
+        cron_allow: yes
+
+- name: ansible-orchestration | create directory for orchestration engine data
+  file:
+    path: "{{ orchestrator_data_dir }}"
+    state: directory
+    mode: '0755'
+    recurse: true
+    owner: "{{ orchestration.user }}"
+    group: "{{ orchestration.group }}"
+  become: true
+
+- name: ansible-orchestration | check if kvm driver config is set
+  shell: "minikube config view | grep -c 'kvm2'"
+  environment:
+    MINIKUBE_HOME: "{{ orchestrator_data_dir }}"
+  become: true
+  become_user: "{{ orchestration.user }}"
+  changed_when: false
+  ignore_errors: true
+  register: kvm2_enabled
+
+- name: ansible-orchestration | set kvm as default driver
+  command: "minikube config set vm-driver kvm2"
+  environment:
+    MINIKUBE_HOME: "{{ orchestrator_data_dir }}"
+  become: true
+  become_user: "{{ orchestration.user }}"
+  when: >
+    virt_enabled.stdout == "true" and
+    (not kvm2_enabled.rc == 0 or
+    not kvm2_enabled.stdout == 1)
+
+#- name: ansible-orchestration | orchestrator systemd service
+#  template:
+#    src: kube.service.j2
+#    dest: /etc/systemd/system/kube.service
+#    owner: root
+#    group: root
+#    mode: '0755'
+
+- name: ansible-orchestration | start minikube
+  command:
+    cmd: "minikube start"
+    creates: "/home/{{ orchestration.user }}/.kube"
+#  notify: ansible-orchestration | refresh kube
+  environment:
+    MINIKUBE_HOME: "{{ orchestrator_data_dir }}"
+  become: true
+  become_user: "{{ orchestration.user }}"

@@ -19,3 +19,7 @@ minikube_redis_filename: 'minikube-{{ minikube_os }}-{{ minikube_architecture }}
 
 # File name of the Minikube download file
 minikube_download_filename: '{{ minikube_redis_filename }}-{{ minikube_version }}'
+
+orchestration:
+  group: orchestrationadm
+  user: orchestrationadm

@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    minikube_download_dir: /tmp
+  tasks:
+    - name: "Include ansible-orchestration"
+      include_role:
+        name: "ansible-orchestration"

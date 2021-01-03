@@ -1,0 +1,21 @@
+[Unit]
+Description=Minikube service
+After=network.target
+
+[Service]
+Type=forking
+# Another Type option: forking
+Environment=MINIKUBE_HOME={{ orchestrator_data_dir }}
+User={{ orchestration.user }}
+WorkingDirectory=/home/{{ orchestration.user }}
+ExecStart=/usr/local/bin/minikube start --vm-driver=kvm2
+ExecStop=/usr/local/bin/minikube stop
+# Restart=on-failure
+# Other Restart options: or always, on-abort, etc
+TimeoutStartSec=300
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+
