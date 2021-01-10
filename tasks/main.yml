@@ -1,6 +1,6 @@
 ---
 
-- name: minikube | create local temporary directory
+- name: ansible_role_minikube | create local temporary directory
   tempfile:
     state: directory
     suffix: binary
@@ -8,7 +8,7 @@
   delegate_to: 127.0.0.1
   register: minikubeDownloadDirectory
 
-- name: download sha256sum
+- name: ansible_role_minikube | download sha256sum
   get_url:
     url: '{{ minikube_mirror }}/{{ minikube_redis_filename }}.sha256'
     dest: '{{ minikubeDownloadDirectory.path }}/{{ minikube_download_filename }}.sha256'
@@ -19,13 +19,13 @@
   changed_when: false
   delegate_to: 127.0.0.1
 
-- name: read sha256sum
+- name: ansible_role_minikube | read sha256sum
   slurp:
     src: '{{ minikubeDownloadDirectory.path }}/{{ minikube_download_filename }}.sha256'
   register: minikube_sha256sum
   delegate_to: 127.0.0.1
 
-- name: download Minikube
+- name: ansible_role_minikube | download Minikube
   get_url:
     url: '{{ minikube_mirror }}/{{ minikube_redis_filename }}'
     dest: '{{ minikubeDownloadDirectory.path }}/{{ minikube_download_filename }}'
@@ -37,7 +37,7 @@
   changed_when: false
   delegate_to: 127.0.0.1
 
-- name: create the Minikube installation dir
+- name: ansible_role_minikube | create the Minikube installation dir
   become: yes
   file:
     state: directory
@@ -46,7 +46,7 @@
     mode: 'u=rwx,go=rx'
     dest: '{{ minikube_install_dir }}'
 
-- name: install Minikube
+- name: ansible_role_minikube | install Minikube
   become: yes
   copy:
     src: '{{ minikubeDownloadDirectory.path }}/{{ minikube_download_filename }}'
@@ -57,22 +57,22 @@
     mode: 'u=rwx,go=rx'
 
 
-- name: ansible-orchestration | check if virtualization is enabled
+- name: ansible_role_minikube | ansible-orchestration | check if virtualization is enabled
   shell: set -o pipefail && egrep -q 'vmx|svm' /proc/cpuinfo && echo true || echo false
   changed_when: false
   register: virt_enabled
 
-- name: ansible-orchestration | debug virtualization flag value
+- name: ansible_role_minikube | debug virtualization flag value
   debug:
     var: virt_enabled
     verbosity: 2
 
-- name: ansible-orchestration | installs libvirt and kvm drivers if virtualisation is enabled
+- name: ansible_role_minikube | installs libvirt and kvm drivers if virtualisation is enabled
   import_role:
     name: tcharl.ansible_virtualization
   when: virt_enabled.stdout == "true" and not
 
-- name: ansible-orchestration | add system user
+- name: ansible_role_minikube | add system user
   import_role:
     name: tcharl.ansible_users
   vars:
@@ -85,7 +85,7 @@
         shell: /sbin/nologin
         cron_allow: yes
 
-- name: ansible-orchestration | create directory for orchestration engine data
+- name: ansible_role_minikube | create directory for orchestration engine data
   file:
     path: "{{ orchestrator_data_dir }}"
     state: directory
@@ -95,7 +95,7 @@
     group: "{{ orchestration.group }}"
   become: true
 
-- name: ansible-orchestration | check if kvm driver config is set
+- name: ansible_role_minikube | check if kvm driver config is set
   shell: "minikube config view | grep -c 'kvm2'"
   environment:
     MINIKUBE_HOME: "{{ orchestrator_data_dir }}"
@@ -105,7 +105,7 @@
   ignore_errors: true
   register: kvm2_enabled
 
-- name: ansible-orchestration | set kvm as default driver
+- name: ansible_role_minikube | set kvm as default driver
   command: "minikube config set vm-driver kvm2"
   environment:
     MINIKUBE_HOME: "{{ orchestrator_data_dir }}"
@@ -124,7 +124,7 @@
 #    group: root
 #    mode: '0755'
 
-- name: ansible-orchestration | start minikube
+- name: ansible_role_minikube | start minikube
   command:
     cmd: "minikube start"
     creates: "/home/{{ orchestration.user }}/.kube"
