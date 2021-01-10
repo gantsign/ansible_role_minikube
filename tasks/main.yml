@@ -79,11 +79,9 @@
     ansible_become: yes
     users_group_list:
       - name: "{{ orchestration.group }}"
-      - name: "{{ orchestrator_virtualization_group }}"
     users_user_list: # minikube should create a ~/.kube/config file...
       - name: "{{ orchestration.user }}"
         group: "{{ orchestration.group }}"
-        groups: "{{ orchestrator_virtualization_group }}"
         shell: /sbin/nologin
         cron_allow: yes
 
