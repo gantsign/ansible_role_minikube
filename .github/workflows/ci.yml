@@ -25,11 +25,11 @@ jobs:
           - debian_max
           - debian_min
           - ubuntu_max
-          - ubuntu_min
           - opensuse
+          - fedora
         include:
           - ansible-version: '2.8.16'
-            molecule-scenario: ubuntu_max
+            molecule-scenario: ubuntu_min
     env:
       MOLECULEW_ANSIBLE: ${{ matrix.ansible-version }}
 
@@ -69,3 +69,12 @@ jobs:
       - name: Compact cache
         if: steps.molecule-cache.outputs.cache-hit != 'true'
         run: find ~/.moleculew -name '__pycache__' -exec rm -rf {} +
+
+  test-all:
+    if: ${{ always() }}
+    name: Test (matrix)
+    runs-on: ubuntu-18.04
+    needs: test
+    steps:
+      - name: Check test matrix status
+        run: "[[ '${{ needs.test.result }}' == 'success' ]] || exit 1"
