@@ -23,7 +23,7 @@
   get_url:
     url: '{{ minikube_mirror }}/{{ minikube_redis_filename }}'
     dest: '{{ minikube_download_dir }}/{{ minikube_download_filename }}'
-    sha256sum: '{{ minikube_sha256sum.content | b64decode | trim }}'
+    checksum: 'sha256:{{ minikube_sha256sum.content | b64decode | trim }}'
     force: no
     use_proxy: yes
     validate_certs: yes
