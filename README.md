@@ -11,7 +11,7 @@ the tool for running Kubernetes locally.
 Requirements
 ------------
 
-* Ansible >= 2.8
+* Ansible >= 2.9
 
 * Linux Distribution
 
