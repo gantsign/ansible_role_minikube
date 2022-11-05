@@ -24,7 +24,7 @@ galaxy_info:
         - bullseye
     - name: opensuse
       versions:
-        - 15.3
+        - 15.4
   galaxy_tags:
     - minikube
     - kubernetes
