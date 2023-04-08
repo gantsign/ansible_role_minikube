@@ -5,7 +5,7 @@ galaxy_info:
   description: Ansible role for downloading and installing Minikube.
   company: GantSign Ltd.
   license: MIT
-  min_ansible_version: '2.9'
+  min_ansible_version: '2.12'
   platforms:
     - name: EL
       versions:
