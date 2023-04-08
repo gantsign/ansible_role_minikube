@@ -59,7 +59,7 @@ are shown below):
 minikube_version: '1.30.1'
 
 # Directory to store files downloaded for Minikube
-minikube_download_dir: "{{ x_ansible_download_dir | default(ansible_env.HOME + '/.ansible/tmp/downloads') }}"
+minikube_download_dir: "{{ x_ansible_download_dir | default(ansible_facts.env.HOME + '/.ansible/tmp/downloads') }}"
 ```
 
 Example Playbook
