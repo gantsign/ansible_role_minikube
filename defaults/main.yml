@@ -1,3 +1,4 @@
+# code: language=ansible
 ---
 # Minikube version number
 minikube_version: '1.30.1'
