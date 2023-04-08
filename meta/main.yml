@@ -5,14 +5,14 @@ galaxy_info:
   description: Ansible role for downloading and installing Minikube.
   company: GantSign Ltd.
   license: MIT
-  min_ansible_version: 2.9
+  min_ansible_version: '2.9'
   platforms:
     - name: EL
       versions:
-        - 8
+        - '8'
     - name: Fedora
       versions:
-        - 35
+        - '35'
     - name: Ubuntu
       versions:
         - bionic
@@ -24,7 +24,7 @@ galaxy_info:
         - bullseye
     - name: opensuse
       versions:
-        - 15.4
+        - '15.4'
   galaxy_tags:
     - minikube
     - kubernetes
