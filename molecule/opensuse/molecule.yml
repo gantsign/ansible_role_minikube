@@ -9,7 +9,7 @@ role_name_check: 2
 
 platforms:
   - name: ansible_role_minikube_opensuse
-    image: opensuse/leap:15.4
+    image: opensuse/leap:15.5
 
 provisioner:
   name: ansible
