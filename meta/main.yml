@@ -21,6 +21,7 @@ galaxy_info:
       versions:
         - buster
         - bullseye
+        - bookworm
     - name: opensuse
       versions:
         - '15.4'
