@@ -8,11 +8,14 @@ LICENSE text
 .editorconfig text
 .gitattributes text
 .gitignore text
+.python-version text
 .yamllint text
 *.cfg text
 *.css text
 *.htm text
 *.html text
+*.in text
+*.ini text
 *.js text
 *.json text
 *.less text
