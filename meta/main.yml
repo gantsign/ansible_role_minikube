@@ -19,7 +19,6 @@ galaxy_info:
         - focal
     - name: Debian
       versions:
-        - stretch
         - buster
         - bullseye
     - name: opensuse
