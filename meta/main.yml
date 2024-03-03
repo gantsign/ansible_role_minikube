@@ -25,7 +25,7 @@ galaxy_info:
         - bookworm
     - name: opensuse
       versions:
-        - '15.4'
+        - '15.5'
   galaxy_tags:
     - minikube
     - kubernetes
