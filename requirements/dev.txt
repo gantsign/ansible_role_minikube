@@ -71,7 +71,7 @@ filelock==3.13.1
     #   virtualenv
 flake8==4.0.1
     # via -r lint.in
-idna==3.4
+idna==3.7
     # via requests
 importlib-metadata==6.8.0
     # via build
@@ -99,7 +99,6 @@ mdurl==0.1.2
 molecule[docker]==4.0.4
     # via
     #   -r molecule.in
-    #   molecule
     #   molecule-docker
 molecule-docker==2.1.0
     # via molecule
