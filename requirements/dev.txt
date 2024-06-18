@@ -99,7 +99,6 @@ mdurl==0.1.2
 molecule[docker]==4.0.4
     # via
     #   -r molecule.in
-    #   molecule
     #   molecule-docker
 molecule-docker==2.1.0
     # via molecule
@@ -195,7 +194,7 @@ tox==4.5.1
     # via -r tox.in
 types-python-dateutil==2.8.19.14
     # via arrow
-urllib3==1.26.18
+urllib3==1.26.19
     # via
     #   -r molecule.in
     #   docker
