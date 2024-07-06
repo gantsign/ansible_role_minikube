@@ -31,7 +31,7 @@ build==1.0.3
     # via pip-tools
 cachetools==5.3.2
     # via tox
-certifi==2023.7.22
+certifi==2024.7.4
     # via requests
 cffi==1.16.0
     # via cryptography
@@ -99,7 +99,6 @@ mdurl==0.1.2
 molecule[docker]==4.0.4
     # via
     #   -r molecule.in
-    #   molecule
     #   molecule-docker
 molecule-docker==2.1.0
     # via molecule
